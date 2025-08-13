@@ -85,6 +85,23 @@
             </select>
             @error('model_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
           </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const brandSelect = document.getElementById('brand_id');
+                    const modelSelect = document.getElementById('model_id');
+                    const productInput = document.getElementById('product_name');
+
+                    function updateProductName() {
+                    const brandText = brandSelect.options[brandSelect.selectedIndex]?.text || '';
+                    const modelText = modelSelect.options[modelSelect.selectedIndex]?.text || '';
+                    const combined = `${brandText} ${modelText}`.trim();
+                    productInput.value = combined;
+                    }
+
+                    brandSelect.addEventListener('change', updateProductName);
+                    modelSelect.addEventListener('change', updateProductName);
+                });
+            </script>
         </div>
 
         {{-- 🔢 Serial Numbers --}}
