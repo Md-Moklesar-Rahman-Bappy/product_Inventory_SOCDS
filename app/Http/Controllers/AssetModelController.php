@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AssetModel;
 use Illuminate\Http\Request;
+use App\Models\AssetModel;
+use App\Models\Product;
 
 class AssetModelController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of all models.
      */
     public function index()
     {
@@ -16,9 +17,8 @@ class AssetModelController extends Controller
         return view('models.index', compact('models'));
     }
 
-
     /**
-     * Show the form for creating a new resource.
+     * Show the form to create a new model.
      */
     public function create()
     {
@@ -26,59 +26,78 @@ class AssetModelController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created model.
      */
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'model_name' => 'required|string|max:255',
-            // Add other fields here if needed
+            'model_name' => 'required|string|max:255|unique:asset_models,model_name',
         ]);
 
         AssetModel::create($validated);
 
-        return redirect()->route('models.index')->with('success', 'Model created successfully.');
+        return redirect()->route('models.index')
+            ->with('success', '✅ Model created successfully.');
     }
+
     /**
-     * Display the specified resource.
+     * Display a specific model.
      */
-    public function show(string $id)
+    public function show($id)
     {
         $model = AssetModel::findOrFail($id);
         return view('models.show', compact('model'));
     }
+
     /**
-     * Show the form for editing the specified resource.
+     * Show the form to edit a model.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
         $model = AssetModel::findOrFail($id);
         return view('models.edit', compact('model'));
     }
+
     /**
-     * Update the specified resource in storage.
+     * Update a model.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'model_name' => 'required|string|max:255',
-            // Add other fields here if needed
+            'model_name' => 'required|string|max:255|unique:asset_models,model_name,' . $id,
         ]);
 
         $model = AssetModel::findOrFail($id);
         $model->update($validated);
 
-        return redirect()->route('models.index')->with('success', 'Model updated successfully.');
+        return redirect()->route('models.index')
+            ->with('success', '✏️ Model updated successfully.');
     }
+
     /**
-     * Remove the specified resource from storage.
+     * Delete a model.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
         $model = AssetModel::findOrFail($id);
         $model->delete();
 
-        return redirect()->route('models.index')->with('success', 'Model deleted successfully.');
+        return redirect()->route('models.index')
+            ->with('success', '🗑️ Model deleted successfully.');
     }
 
+    /**
+     * Display products under a specific model.
+     */
+    public function products($id)
+    {
+        $model = AssetModel::findOrFail($id);
+
+        $products = Product::where('model_id', $id)
+            ->with(['brand', 'category'])
+            ->latest()
+            ->paginate(20);
+
+        return view('models.products', compact('model', 'products'));
+    }
 }

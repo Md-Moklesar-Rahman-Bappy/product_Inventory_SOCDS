@@ -2,97 +2,135 @@
 <html lang="en">
 <head>
   <title>SOCDS Project Admin - Register</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Fonts and styles -->
-  <link href="{{ asset('admin_assets/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
-  <link href="{{ asset('admin_assets/css/sb-admin-2.min.css') }}" rel="stylesheet">
+  <!-- Assets -->
+  <link rel="stylesheet" href="{{ asset('index/vendor/bootstrap/css/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('index/fonts/font-awesome-4.7.0/css/font-awesome.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('index/vendor/animate/animate.css') }}">
+  <link rel="stylesheet" href="{{ asset('index/vendor/css-hamburgers/hamburgers.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('index/vendor/select2/select2.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('index/css/util.css') }}">
+  <link rel="stylesheet" href="{{ asset('index/css/main.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+  <style>
+    .container-login100 {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 0 !important;
+    }
+    .wrap-login100 {
+      padding: 40px 55px;
+    }
+    .login100-form-title {
+      margin-bottom: 25px;
+    }
+  </style>
 </head>
-<body class="bg-gradient-primary">
-  <div class="container">
-    <div class="card o-hidden border-0 shadow-lg my-5">
-      <div class="card-body p-0">
-        <div class="row">
-          <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
-          <div class="col-lg-7">
-            <div class="p-5">
-              <div class="text-center">
-                <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
-              </div>
+<body>
 
-              {{-- Flash Messages --}}
-              @if (session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
-              @endif
-              @if (session('error'))
-                <div class="alert alert-danger">{{ session('error') }}</div>
-              @endif
-
-              {{-- Registration Form --}}
-              <form action="{{ route('register.save') }}" method="POST" class="user" novalidate>
-                @csrf
-
-                <div class="form-group">
-                  <label for="name" class="sr-only">Full Name</label>
-                  <input id="name" name="name" type="text"
-                         class="form-control form-control-user @error('name') is-invalid @enderror"
-                         value="{{ old('name') }}" placeholder="Full Name" autocomplete="name" required>
-                  @error('name')
-                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                  @enderror
-                </div>
-
-                <div class="form-group">
-                  <label for="email" class="sr-only">Email Address</label>
-                  <input id="email" name="email" type="email"
-                         class="form-control form-control-user @error('email') is-invalid @enderror"
-                         value="{{ old('email') }}" placeholder="Email Address" autocomplete="email" required>
-                  @error('email')
-                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                  @enderror
-                </div>
-
-                <div class="form-group row">
-                  <div class="col-sm-6 mb-3 mb-sm-0">
-                    <label for="password" class="sr-only">Password</label>
-                    <input id="password" name="password" type="password"
-                           class="form-control form-control-user @error('password') is-invalid @enderror"
-                           placeholder="Password" autocomplete="new-password" required>
-                    @error('password')
-                      <div class="invalid-feedback d-block">{{ $message }}</div>
-                    @enderror
-                  </div>
-                  <div class="col-sm-6">
-                    <label for="password_confirmation" class="sr-only">Repeat Password</label>
-                    <input id="password_confirmation" name="password_confirmation" type="password"
-                           class="form-control form-control-user @error('password_confirmation') is-invalid @enderror"
-                           placeholder="Repeat Password" autocomplete="new-password" required>
-                    @error('password_confirmation')
-                      <div class="invalid-feedback d-block">{{ $message }}</div>
-                    @enderror
-                  </div>
-                </div>
-
-                <button type="submit" class="btn btn-primary btn-user btn-block">Register Account</button>
-              </form>
-
-              <hr>
-              <div class="text-center">
-                <a class="small" href="{{ route('login') }}">Already have an account? Login!</a>
-              </div>
-            </div>
-          </div>
+  <div class="limiter">
+    <div class="container-login100">
+      <div class="wrap-login100">
+        <div class="login100-pic js-tilt" data-tilt>
+          <img src="{{ asset('index/images/img-01.png') }}" alt="IMG">
         </div>
+
+        <form class="login100-form validate-form" method="POST" action="{{ route('register.save') }}" novalidate role="form">
+          @csrf
+
+          <span class="login100-form-title">Create Your Account</span>
+
+          {{-- Flash Messages --}}
+          @foreach (['success', 'error'] as $msg)
+            @if (session($msg))
+              <div class="alert alert-{{ $msg }} w-100 text-center">{{ session($msg) }}</div>
+            @endif
+          @endforeach
+
+          {{-- Name --}}
+          <div class="wrap-input100 validate-input" data-validate="Name is required">
+            <input class="input100 @error('name') is-invalid @enderror" type="text" name="name"
+                   value="{{ old('name') }}" placeholder="Full Name" required autocomplete="name">
+            <span class="focus-input100"></span>
+            <span class="symbol-input100"><i class="fa fa-user" aria-hidden="true"></i></span>
+            @error('name')
+              <div class="invalid-feedback d-block text-white">{{ $message }}</div>
+            @enderror
+          </div>
+
+          {{-- Email --}}
+          <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+            <input class="input100 @error('email') is-invalid @enderror" type="email" name="email"
+                   value="{{ old('email') }}" placeholder="Email" required autocomplete="email">
+            <span class="focus-input100"></span>
+            <span class="symbol-input100"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+            @error('email')
+              <div class="invalid-feedback d-block text-white">{{ $message }}</div>
+            @enderror
+          </div>
+
+          {{-- Password --}}
+          <div class="wrap-input100 validate-input" data-validate="Password is required">
+            <input id="password" class="input100 @error('password') is-invalid @enderror"
+                   type="password" name="password" placeholder="Password"
+                   required autocomplete="new-password">
+            <span class="symbol-input100">
+              <i class="fa fa-lock" aria-hidden="true"></i>
+            </span>
+            @error('password')
+              <div class="invalid-feedback d-block text-white">{{ $message }}</div>
+            @enderror
+          </div>
+
+          {{-- Confirm Password --}}
+          <div class="wrap-input100 validate-input" data-validate="Please confirm your password">
+            <input class="input100" type="password" name="password_confirmation"
+                   placeholder="Confirm Password" required autocomplete="new-password">
+            <span class="symbol-input100"><i class="fa fa-check" aria-hidden="true"></i></span>
+          </div>
+
+          {{-- Submit --}}
+          <div class="container-login100-form-btn">
+            <button type="submit" class="login100-form-btn">Register</button>
+          </div>
+
+          {{-- Links --}}
+          <div class="text-center p-t-12">
+            <span class="txt1">Already have an account?</span>
+            <a class="txt2" href="{{ route('login') }}">Login</a>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 
+  <!-- Custom Script -->
+  <script>
+    $(document).ready(function () {
+      $('.js-tilt').tilt({ scale: 1.1 });
+
+      $('.toggle-password').on('click', function () {
+        const input = $('#password');
+        const isPassword = input.attr('type') === 'password';
+        input.attr('type', isPassword ? 'text' : 'password');
+      });
+
+      $('form').on('submit', function () {
+        $('.login100-form-btn').prop('disabled', true).text('Registering...');
+      });
+    });
+  </script>
+
   <!-- Scripts -->
-  <script src="{{ asset('admin_assets/vendor/jquery/jquery.min.js') }}"></script>
-  <script src="{{ asset('admin_assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-  <script src="{{ asset('admin_assets/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
-  <script src="{{ asset('admin_assets/js/sb-admin-2.min.js') }}"></script>
+  <script src="{{ asset('index/vendor/jquery/jquery-3.2.1.min.js') }}"></script>
+  <script src="{{ asset('index/vendor/bootstrap/js/popper.js') }}"></script>
+  <script src="{{ asset('index/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+  <script src="{{ asset('index/vendor/select2/select2.min.js') }}"></script>
+  <script src="{{ asset('index/vendor/tilt/tilt.jquery.min.js') }}"></script>
+  <script src="{{ asset('index/js/main.js') }}"></script>
 </body>
 </html>

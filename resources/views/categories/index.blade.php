@@ -44,19 +44,22 @@
                 <td>
                   <div class="d-flex justify-content-center gap-2">
                     <a href="{{ route('categories.show', $c->id) }}" class="btn btn-sm btn-outline-info" title="Detail">
-                      <i class="fa fa-eye"></i>
+                        <i class="fa fa-eye"></i>
                     </a>
                     <a href="{{ route('categories.edit', $c->id) }}" class="btn btn-sm btn-outline-warning" title="Edit">
-                      <i class="fa fa-edit"></i>
+                        <i class="fa fa-edit"></i>
+                    </a>
+                    <a href="{{ route('categories.products', $c->id) }}" class="btn btn-sm btn-outline-success" title="View Products">
+                        <i class="fa fa-box-open"></i>
                     </a>
                     <form action="{{ route('categories.destroy', $c->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this category?')" style="display:inline;">
-                      @csrf
-                      @method('DELETE')
-                      <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete">
                         <i class="fa fa-trash"></i>
-                      </button>
+                        </button>
                     </form>
-                  </div>
+                    </div>
                 </td>
               </tr>
             @empty

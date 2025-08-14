@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Product;
 
 class CategoryController extends Controller
 {
@@ -69,5 +70,15 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
         $category->delete();
         return redirect()->route('categories.index')->with('success', 'Category deleted successfully');
+    }
+
+    public function products($id)
+    {
+        $category = Category::findOrFail($id);
+        $products = Product::where('category_id', $id)->with(['brand', 'model'])->paginate(20);
+
+        session()->flash('success', 'Showing products in "' . $category->category_name . '" category');
+
+        return view('categories.products', compact('category', 'products'));
     }
 }

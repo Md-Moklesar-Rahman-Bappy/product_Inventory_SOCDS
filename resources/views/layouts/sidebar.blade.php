@@ -3,10 +3,12 @@
   {{-- 🌟 Brand --}}
   <a class="sidebar-brand d-flex align-items-center justify-content-center py-3" href="{{ route('dashboard') }}">
     <div class="sidebar-brand-icon rotate-n-15 text-warning">
-      <i class="fas fa-laugh-wink fa-lg"></i>
+        <img src="{{ asset('images/logo.svg') }}" alt="SOCDS Logo" style="height: 50px">
     </div>
-    <div class="sidebar-brand-text mx-3 text-white">DLRS SOCDS Project</div>
-  </a>
+    <div class="sidebar-brand-text mx-3 text-white">
+        DLRS SOCDS Project
+    </div>
+</a>
 
   <hr class="sidebar-divider my-0">
 
